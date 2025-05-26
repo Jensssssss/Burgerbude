@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/*
+    background-color: #e60e92;
+    background-image: url('images/header-bg.png');
+    background-size: cover;
+*/
+.header {
+    background-image: url('../images/header2.jpg');
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    height: 140px; /* Feste Höhe des Headers */
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.header img {
+height: 158px;
+  width: 831px;
+  margin-left: 30px;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+	margin-right: 40px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #333;
+    border-radius: 5px;
+}
+
+.menu a:hover {
+    background-color: #555;
+}
+
+.content {
+    padding-top: 160px; /* Space for the fixed header plus some extra space */
+    padding: 20px;
+	margin-top: 150px;
+}
+
+h1 {
+    text-align: center;
+    color: #e60e92;
+}
+
+.orders {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #e60e92;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+td:nth-child(odd) {
+    background-color: #fff;
+}
+
+button {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.delete-order {
+    background-color: #e60e92;
+    color: white;
+}
+
+button.delete-order:hover {
+    background-color: #d40d82;
+}
+
+button.view-items {
+    background-color: #333;
+    color: white;
+}
+
+button.view-items:hover {
+    background-color: #555;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid black;
+    padding: 20px;
+    z-index: 1001;
+    text-align: center;
+}
+
+.popup button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #e60e92;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.popup button:hover {
+    background-color: #d40d82;
+}
