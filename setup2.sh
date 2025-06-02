@@ -21,13 +21,22 @@ DHCP_RANGE_END="192.168.178.100"
 NETWORK="192.168.178.0"
 NETMASK="255.255.255.0"
 
-# Falls INTERFACE nicht manuell gesetzt wurde, ermittelt dieser Befehl die Standard-Schnittstelle
-if [ -z "$INTERFACE" ]; then
-    INTERFACE=$(ip route | awk '/default/ {print $5; exit}')
+# DHCP: Nur eno1 und eth1 sollen Anfragen beantworten, wlan wird ignoriert.
+DHCP_INTERFACES=""
+for iface in eno1 eth1; do
+    if ip link show "$iface" > /dev/null 2>&1; then
+        DHCP_INTERFACES+="$iface "
+    fi
+done
+if [ -z "$DHCP_INTERFACES" ]; then
+    echo "Keine unterstützten Ethernet-Schnittstellen (eno1 oder eth1) gefunden. Bitte prüfen Sie Ihre Hardware und Konfiguration."
+    exit 1
 fi
-echo "Genutzte Netzwerkschnittstelle: $INTERFACE"
+# Entferne etwaige überflüssige Leerzeichen
+DHCP_INTERFACES=$(echo $DHCP_INTERFACES)
+echo "DHCP wird auf folgenden Interfaces antworten: $DHCP_INTERFACES"
 
-# Basis-Verzeichnis: Das Verzeichnis, in dem sich dieses Skript befindet
+# BASIS-Verzeichnis: Das Verzeichnis, in dem sich dieses Skript befindet
 BASE_DIR="$(dirname "$0")"
 echo "Basisverzeichnis: $BASE_DIR"
 
@@ -43,7 +52,7 @@ sudo systemctl enable mariadb
 
 # Setze das Root-Passwort
 echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PASSWORD'); FLUSH PRIVILEGES;" | sudo mysql -u root
-# Optional: Umstellung der Authentifizierung auf mysql_native_password
+# Optional: Umstellung der Authentifizierung auf mysql_native_password (je nach MariaDB-Version hilfreich)
 sudo mysql -e "UPDATE mysql.user SET plugin='mysql_native_password' WHERE User='root'; FLUSH PRIVILEGES;"
 
 # --- PhpMyAdmin Setup ---
@@ -112,11 +121,11 @@ subnet $NETWORK netmask $NETMASK {
 }
 EOF"
 
-# DHCP-Schnittstelle konfigurieren
-echo "▶️ Lege die DHCP-Schnittstelle fest..."
+# DHCP-Schnittstelle konfigurieren (nur die erlaubten Ethernet-Interfaces)
+echo "▶️ Lege die DHCP-Schnittstelle(n) fest..."
 sudo cp /etc/default/isc-dhcp-server /etc/default/isc-dhcp-server.bak 2>/dev/null
 sudo bash -c "cat > /etc/default/isc-dhcp-server <<EOF
-INTERFACESv4=\"$INTERFACE\"
+INTERFACESv4=\"$DHCP_INTERFACES\"
 INTERFACESv6=\"\"
 EOF"
 sudo systemctl restart isc-dhcp-server
