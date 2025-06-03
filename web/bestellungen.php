@@ -15,6 +15,8 @@ $result = $conn->query($sql);
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="30">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kali's Burgerbude</title>
     <link rel="stylesheet" href="css/bestellungen.css">
