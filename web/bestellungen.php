@@ -23,9 +23,6 @@ $result = $conn->query($sql);
 
 <div class="header">
     <img src="images/logo3.png" alt="Logo">
-    <div class="menu">
-        <a href="index.php">Startseite</a>
-    </div>
 </div>
 
 <div class="content">
